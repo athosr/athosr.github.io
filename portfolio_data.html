@@ -5,9 +5,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Athos Santos</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Software Engineer & Game Developer" />
-	<meta name="keywords" content="athos santos, athos, software engineer, game developer, unreal engine, programmer" />
-	<meta name="author" content="Athos Santos" />
+	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
+	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="FreeHTML5.co" />
 
 	<!--
 	//////////////////////////////////////////////////////
@@ -75,9 +75,9 @@
 			</div>
 			<div class="fh5co-top-social menu-1 text-right">
 				<ul class="fh5co-social">
-					<li><a href="https://www.linkedin.com/in/athos-santos/" target="_blank"><i class="icon-linkedin"></i></a></li>
-					<li><a href="https://github.com/athosr" target="_blank"><i class="icon-github"></i></a></li>
-					<li><a href="https://www.facebook.com/athosrls" target="_blank"><i class="icon-facebook"></i></a></li>
+					<li><a href="#"><i class="icon-twitter"></i></a></li>
+					<li><a href="#"><i class="icon-dribbble"></i></a></li>
+					<li><a href="#"><i class="icon-github"></i></a></li>
 				</ul>
 			</div>
 		</div>
@@ -86,10 +86,10 @@
 	<div id="fh5co-author">
 		<div class="container">
 			<div class="row top-line animate-box">
-				<div class="col-md-6 col-md-offset-2 col-md-push-0 text-left fh5co-heading">
-					<h2>Infamy</h2>
-					<p>In the Martian mining colony of ARES-6, crime pays. Three factions vie for control of this corrupt new world and everything within it. You are a mercenary known as a "freelancer", here to profit off the conflict, to make a name for yourself – but ambition alone isn't enough. A network of seedy contacts will assist you in undertaking the dangerous missions necessary to bolster your rep. Whether it's hiring henchmen to carry out your dirty work or plotting with secret schemes, you'll let nothing stand between you and your squalid goals.</p>
+					<h1>Data</h2>
+					<p>Documenting projects I've been working on related to Data Analysis/Engineering!</p>
 
+<!--
 					<div class="role">
 						<h3>Role</h3>
 						<ul>
@@ -97,18 +97,90 @@
 						</ul>
 					</div>
 
+					<p><a href="https://store.steampowered.com/app/1158500/Between_Two_Castles__Digital_Edition/" target="_blank" class="btn btn-primary">Visit Website</a></p>
 				</div>
+				-->
 			</div>
+			
 			<div class="row">
-				<div class="col-md-8 col-md-offset-2">
-					<p class="animate-box"><img src="images/infamy/infamy1.png" class="img-responsive"></p>
-					<p class="animate-box"><img src="images/infamy/infamy2.png" class="img-responsive"></p>
-					<p class="animate-box"><img src="images/infamy/infamy3.png" class="img-responsive"></p>
-					<p class="animate-box"><img src="images/infamy/infamy4.png" class="img-responsive"></p>
-					<p class="animate-box"><img src="images/infamy/infamy5.png" class="img-responsive"></p>
-					<p class="animate-box"><img src="images/infamy/infamy6.gif" class="img-responsive"></p>
+				<div class="col-md-14">
+					<p class="animate-box"><img src="images/data/ServerlessEventDrivenDataProcessing.svg" class="img-responsive"></p>
+					<p>This solution is for situations where files are uploaded on an ad hoc basis and require transformation before being loaded into a data target. In this case, files are uploaded in JSON format and converted to Parquet. Thanks to the SNS->SQS pipeline, the system is highly scalable, even with AWS Lambda limitations, and it's also extendable if there's a need to use the same event from the file upload in the data source for other purposes.</p>
+					
+
+								
+			<button title="Click to Show/Hide Content" type="button" 
+				onclick="if(document.getElementById('spoiler').style.display=='none') {
+							document.getElementById('spoiler').style.display=''
+						} else {
+							document.getElementById('spoiler').style.display='none'
+						}" 
+				class="btn btn-primary">
+				Show Code
+			</button>
+
+			<div id="spoiler" style="display:none; margin-top: 10px; background-color: #f4f4f4; padding: 2px; border-radius: 1px;">
+				<pre><code>
+				import boto3
+				import pandas as pd
+				from io import StringIO, BytesIO
+				import json
+
+				s3 = boto3.client('s3')
+
+				def lambda_handler(event, context):
+					try:
+						print("Starting lambda execution")
+						
+						# Loop through SQS messages
+						for record in event['Records']:
+							print("Processing record")
+							
+							# Extract the body of the SQS message
+							sqs_body = record['body']
+							sns_message = json.loads(sqs_body)['Message']
+							s3_event = json.loads(sns_message)
+							
+							bucket_name = s3_event['detail']['bucket']['name']
+							object_key = s3_event['detail']['object']['key']
+							
+							print(f"Fetching object from S3: Bucket={bucket_name}, Key={object_key}")
+							s3_object = s3.get_object(Bucket=bucket_name, Key=object_key)
+							
+							object_content = s3_object['Body'].read().decode('utf-8')
+							print("Fetched S3 object content")
+							
+							json_data = json.loads(object_content)
+							df = pd.json_normalize(json_data)
+							print("Converted JSON to DataFrame")
+							
+							# Convert DataFrame to Parquet and write to an in-memory buffer
+							buffer = BytesIO()
+							df.to_parquet(buffer, engine='pyarrow')
+							buffer.seek(0)  # Reset buffer pointer
+							print("Converted DataFrame to Parquet")
+							
+							# Upload the parquet file to S3
+							s3.upload_fileobj(buffer, 'endpoint-data-driven-processing-test', object_key.replace('json', 'parquet'))
+							print(f"Uploaded Parquet file to S3")
+						
+						return {
+							'statusCode': 200,
+							'body': json.dumps('Successfully processed S3 event')
+						}
+					
+					except Exception as e:
+						print(f"Error processing event: {str(e)}")
+						return {
+							'statusCode': 500,
+							'body': json.dumps(f"Error: {str(e)}")
+						}			
+				</code></pre>
+			</div>
 
 
+					
+					
 <!--
 					<div class="row row-pt-md portfolio-navigation">
 						<div class="col-xs-4 text-left">
