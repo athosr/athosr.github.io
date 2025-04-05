@@ -1,4 +1,11 @@
 <!DOCTYPE HTML>
+<!-- Include Prism.js and Prism.css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+
+
 <html>
 	<head>
 	<meta charset="utf-8">
@@ -87,100 +94,219 @@
 		<div class="container">
 			<div class="row top-line animate-box">
 					<h1>Data</h2>
-					<p>Documenting projects I've been working on related to Data Analysis/Engineering!</p>
-
-<!--
-					<div class="role">
-						<h3>Role</h3>
-						<ul>
-							<li>Gameplay Programmer</li>
-						</ul>
-					</div>
-
-					<p><a href="https://store.steampowered.com/app/1158500/Between_Two_Castles__Digital_Edition/" target="_blank" class="btn btn-primary">Visit Website</a></p>
-				</div>
-				-->
+					<p>Documenting projects I've been working on related to Data Engineering!</p>
 			</div>
-			
+
+
+
+
+			<!-- Non-blocking ETL using Node.js -->
+
+
+
 			<div class="row">
 				<div class="col-md-14">
-					<p class="animate-box"><img src="images/data/ServerlessEventDrivenDataProcessing.svg" class="img-responsive"></p>
-					<p>This solution is for situations where files are uploaded on an ad hoc basis and require transformation before being loaded into a data target. In this case, files are uploaded in JSON format and converted to Parquet. Thanks to the SNS->SQS pipeline, the system is highly scalable, even with AWS Lambda limitations, and it's also extendable if there's a need to use the same event from the file upload in the data source for other purposes.</p>
-					
+					<h1> ETL using Node.js </h1>
+					<p class="animate-box"><img src="images/data/NodejsETL.png" class="img-responsive"></p>					
+					<p>In this ETL process, I used Node.js along with the xml-flow and fast-csv libraries to stream and transform XML data into a CSV file using a predefined delimiter. By processing each <item> element as it is parsed, the code avoids loading the entire XML file into memory, making it suitable for large datasets.
 
+					The implementation is fully non-blocking, leveraging Node.js's asynchronous stream-based architecture to efficiently handle I/O operations without blocking the event loop. All files are processed locally in this example.</p>
 								
 			<button title="Click to Show/Hide Content" type="button" 
-				onclick="if(document.getElementById('spoiler').style.display=='none') {
-							document.getElementById('spoiler').style.display=''
+				onclick="if(document.getElementById('spoilerbutton2').style.display=='none') {
+							document.getElementById('spoilerbutton2').style.display=''
 						} else {
-							document.getElementById('spoiler').style.display='none'
+							document.getElementById('spoilerbutton2').style.display='none'
 						}" 
 				class="btn btn-primary">
 				Show Code
 			</button>
 
-			<div id="spoiler" style="display:none; margin-top: 10px; background-color: #f4f4f4; padding: 2px; border-radius: 1px;">
-				<pre><code>
-				import boto3
-				import pandas as pd
-				from io import StringIO, BytesIO
-				import json
-
-				s3 = boto3.client('s3')
-
-				def lambda_handler(event, context):
-					try:
-						print("Starting lambda execution")
-						
-						# Loop through SQS messages
-						for record in event['Records']:
-							print("Processing record")
-							
-							# Extract the body of the SQS message
-							sqs_body = record['body']
-							sns_message = json.loads(sqs_body)['Message']
-							s3_event = json.loads(sns_message)
-							
-							bucket_name = s3_event['detail']['bucket']['name']
-							object_key = s3_event['detail']['object']['key']
-							
-							print(f"Fetching object from S3: Bucket={bucket_name}, Key={object_key}")
-							s3_object = s3.get_object(Bucket=bucket_name, Key=object_key)
-							
-							object_content = s3_object['Body'].read().decode('utf-8')
-							print("Fetched S3 object content")
-							
-							json_data = json.loads(object_content)
-							df = pd.json_normalize(json_data)
-							print("Converted JSON to DataFrame")
-							
-							# Convert DataFrame to Parquet and write to an in-memory buffer
-							buffer = BytesIO()
-							df.to_parquet(buffer, engine='pyarrow')
-							buffer.seek(0)  # Reset buffer pointer
-							print("Converted DataFrame to Parquet")
-							
-							# Upload the parquet file to S3
-							s3.upload_fileobj(buffer, 'endpoint-data-driven-processing-test', object_key.replace('json', 'parquet'))
-							print(f"Uploaded Parquet file to S3")
-						
-						return {
-							'statusCode': 200,
-							'body': json.dumps('Successfully processed S3 event')
-						}
+			<div id="spoilerbutton2" style="display:none; margin-top: 10px; background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+				<pre><code class="language-javascript">
 					
-					except Exception as e:
-						print(f"Error processing event: {str(e)}")
-						return {
-							'statusCode': 500,
-							'body': json.dumps(f"Error: {str(e)}")
-						}			
+					const fs = require("fs");
+					const xmlFlow = require("xml-flow");
+					const { format } = require("fast-csv");
+
+					const DELIMITER = "," // Change to "\t" for tab-separated values
+					const xmlFilePath = "data.xml";
+					const csvFilePath = "output.csv";
+
+					// Create readable stream for XML file
+					const readStream = fs.createReadStream(xmlFilePath, { encoding: "utf8" });
+					const writeStream = fs.createWriteStream(csvFilePath);
+
+					// Initialize XML streaming parser
+					const xmlStream = xmlFlow(readStream);
+
+					// Create CSV stream
+					const csvStream = format({ headers: true, delimiter: DELIMITER });
+					csvStream.pipe(writeStream);
+
+					// Process each item element in XML
+					xmlStream.on("tag:item", item => {
+						csvStream.write({
+							id: item.id,
+							name: item.name,
+							value: item.value
+						});
+					});
+
+					xmlStream.on("end", () => {
+						csvStream.end();
+						console.log("CSV file written successfully.");
+					});
+
+					
+				</code></pre>
+			</div>
+			<br><br>
+			
+			<p>This code uses mysql2 and fast-csv libraries to connect to a MySQL database, retrieves all rows from the items table, and streams them to a CSV file. It's asynchronous, memory-efficient, and handles both database and file I/O without blocking the Node.js event loop.</p>
+			
+			<button title="Click to Show/Hide Content" type="button" 
+				onclick="if(document.getElementById('spoilerbutton3').style.display=='none') {
+							document.getElementById('spoilerbutton3').style.display=''
+						} else {
+							document.getElementById('spoilerbutton3').style.display='none'
+						}" 
+				class="btn btn-primary">
+				Show Code
+			</button>
+
+			<div id="spoilerbutton3" style="display:none; margin-top: 10px; background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+				<pre><code class="language-javascript">
+					
+					const mysql = require("mysql2/promise");
+					const fs = require("fs");
+					const { writeToStream } = require("fast-csv");
+
+					const DELIMITER = ",";
+
+					async function sqlToCsv(csvFilePath, delimiter = DELIMITER) {
+						const connection = await mysql.createConnection({
+							host: "localhost",
+							user: "user",
+							password: "password",
+							database: "database"
+						});
+
+						try {
+							console.log("Connected to MySQL database.");
+
+							const [rows] = await connection.execute("SELECT * FROM items");
+
+							await new Promise((resolve, reject) => {
+								const ws = fs.createWriteStream(csvFilePath);
+								writeToStream(ws, rows, { headers: true, delimiter })
+									.on("finish", resolve)
+									.on("error", reject);
+							});
+
+							console.log("CSV file written successfully!");
+						} catch (err) {
+							console.error("Error:", err.message);
+						} finally {
+							await connection.end();
+							console.log("Connection closed.");
+						}
+					}
+
+					sqlToCsv("output.csv");
+					
+				</code></pre>
+			</div>
+			<br><br>
+
+			<br><br><br><br>
+			
+			
+			<!-- AWS Serverless Event Driven Data Processing -->
+			
+			
+			<div class="row">
+				<div class="col-md-14">
+					<h1> Serverless Event Driven Data Processing </h1>
+					<p class="animate-box"><img src="images/data/ServerlessEventDrivenDataProcessing.svg" class="img-responsive"></p>
+					<p>This solution is for situations where files are uploaded on an ad hoc basis and require transformation before being loaded into a data target. In this case, files are uploaded in JSON format and converted to Parquet. Thanks to the SNS->SQS pipeline, the system is highly scalable, even with AWS Lambda limitations, and it's also extendable if there's a need to use the same event from the file upload in the data source for other purposes.</p>
+								
+			<button title="Click to Show/Hide Content" type="button" 
+				onclick="if(document.getElementById('spoilerbutton1').style.display=='none') {
+							document.getElementById('spoilerbutton1').style.display=''
+						} else {
+							document.getElementById('spoilerbutton1').style.display='none'
+						}" 
+				class="btn btn-primary">
+				Show AWS Lambda Code
+			</button>
+
+
+			<div id="spoilerbutton1" style="display:none; margin-top: 10px; background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+				<pre><code class="language-python">
+				
+					import boto3
+					import pandas as pd
+					from io import StringIO, BytesIO
+					import json
+
+					s3 = boto3.client('s3')
+
+					def lambda_handler(event, context):
+						try:
+							print("Starting lambda execution")
+							
+							# Loop through SQS messages
+							for record in event['Records']:
+								print("Processing record")
+								
+								# Extract the body of the SQS message
+								sqs_body = record['body']
+								sns_message = json.loads(sqs_body)['Message']
+								s3_event = json.loads(sns_message)
+								
+								bucket_name = s3_event['detail']['bucket']['name']
+								object_key = s3_event['detail']['object']['key']
+								
+								print(f"Fetching object from S3: Bucket={bucket_name}, Key={object_key}")
+								s3_object = s3.get_object(Bucket=bucket_name, Key=object_key)
+								
+								object_content = s3_object['Body'].read().decode('utf-8')
+								print("Fetched S3 object content")
+								
+								json_data = json.loads(object_content)
+								df = pd.json_normalize(json_data)
+								print("Converted JSON to DataFrame")
+								
+								# Convert DataFrame to Parquet and write to an in-memory buffer
+								buffer = BytesIO()
+								df.to_parquet(buffer, engine='pyarrow')
+								buffer.seek(0)  # Reset buffer pointer
+								print("Converted DataFrame to Parquet")
+								
+								# Upload the parquet file to S3
+								s3.upload_fileobj(buffer, 'endpoint-data-driven-processing-test', object_key.replace('json', 'parquet'))
+								print("Uploaded Parquet file to S3")
+							
+							return {
+								'statusCode': 200,
+								'body': json.dumps('Successfully processed S3 event')
+							}
+						
+						except Exception as e:
+							print(f"Error processing event: {str(e)}")
+							return {
+								'statusCode': 500,
+								'body': json.dumps(f"Error: {str(e)}")
+							}
+					
 				</code></pre>
 			</div>
 
 
-					
-					
+
+
+
 <!--
 					<div class="row row-pt-md portfolio-navigation">
 						<div class="col-xs-4 text-left">
