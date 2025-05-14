@@ -97,6 +97,110 @@
 					<p>Documenting projects I've been working on related to Data Engineering!</p>
 			</div>
 
+			<!-- Automated Stock Market Data Pipeline with Astronomer, Airflow, Python and Snowflake -->
+
+
+			<div class="row">
+				<div class="col-md-14">
+					<h1> Automated Stock Market Data Pipeline with Astronomer, Airflow, Python and Snowflake </h1>
+					<p class="animate-box"><img src="images/data/astronomer.png" class="img-responsive"></p>
+					<p class="animate-box"><img src="images/data/stock_pipeline_dag.png" class="img-responsive"></p>	
+					<p class="animate-box"><img src="images/data/stock_pipeline_tasks.png" class="img-responsive"></p>	
+					
+					<p>Designed and deployed a fully automated data pipeline using Apache Airflow managed by Astronomer to ingest and store stock market data. The pipeline retrieves structured data from a public REST API, processes it using Pandas, and stores the results in Snowflake for downstream analytics and reporting. <br>
+					Used the @dag and @task decorators from Airflow's functional API to define a DAG scheduled to run every 12h (0 */12 * * *), ensuring up-to-date data ingestion.<br>
+					Fetched real-time data on top stock gainers by sending GET requests to a configurable REST endpoint. The response is normalized and transformed into a pandas.DataFrame.<br>
+					Utilized the snowflake-connector python library to connect to a Snowflake data warehouse.
+					</p>
+								
+			<button title="Click to Show/Hide Content" type="button" 
+				onclick="if(document.getElementById('spoilerbutton5').style.display=='none') {
+							document.getElementById('spoilerbutton5').style.display=''
+						} else {
+							document.getElementById('spoilerbutton5').style.display='none'
+						}" 
+				class="btn btn-primary">
+				Show Code
+			</button>
+
+			<div id="spoilerbutton5" style="display:none; margin-top: 10px; background-color: #f4f4f4; padding: 10px; border-radius: 5px;">
+				<pre><code class="language-python">
+					
+					from airflow.decorators import dag, task
+					from datetime import datetime
+					import pandas as pd
+					import requests
+					import snowflake.connector
+					import os
+					from dotenv import load_dotenv
+
+					load_dotenv()
+
+					# Configuration from .env
+					REST_API_URL = os.getenv("REST_API_URL")
+					SNOWFLAKE_CONFIG = {
+						"user": os.getenv("SNOWFLAKE_USER"),
+						"password": os.getenv("SNOWFLAKE_PASSWORD"),
+						"account": os.getenv("SNOWFLAKE_ACCOUNT"),
+						"warehouse": os.getenv("SNOWFLAKE_WAREHOUSE"),
+						"database": os.getenv("SNOWFLAKE_DATABASE"),
+						"schema": os.getenv("SNOWFLAKE_SCHEMA"),
+					}
+					TABLE_NAME = "TOP_GAINERS"
+
+					@task
+					def fetch_json_from_api(url):
+						response = requests.get(url)
+						response.raise_for_status()
+						data = response.json()
+						df = pd.json_normalize(data)
+						print(f"Loaded {len(df)} records from API.")
+						return df
+
+					@task
+					def upload_to_snowflake(df, config, table_name):
+						ctx = snowflake.connector.connect(autocommit=True, **config)
+						cs = ctx.cursor()
+
+						try:
+							columns = ", ".join(f'"{col}" STRING' for col in df.columns)
+							cs.execute(f"""
+								CREATE TABLE IF NOT EXISTS {table_name} (
+									{columns}
+								);
+							""")
+
+							for _, row in df.iterrows():
+								values = ", ".join(f"'{str(v).replace("'", "''")}'" for v in row)
+								cs.execute(f"INSERT INTO {table_name} VALUES ({values});")
+
+							print("Upload complete.")
+						finally:
+							cs.close()
+							ctx.close()
+
+					@dag(
+						dag_id='stock_gainers_pipeline',
+						start_date=datetime(2025, 5, 12),
+						schedule='0 */12 * * *',
+						catchup=False,
+						default_args={
+							'owner': 'airflow',
+							'retries': 1,
+						},
+					)
+					def stock_gainers_dag():
+						df = fetch_json_from_api(REST_API_URL)
+						upload_to_snowflake(df, SNOWFLAKE_CONFIG, TABLE_NAME)
+
+					stock_gainers_dag()
+					
+				</code></pre>
+			</div>
+			<br><br>
+			<br><br><br><br>
+
+
 
 			<!-- ETL using Python - Crypto data/Web Scraper/Google Sheets  -->
 
