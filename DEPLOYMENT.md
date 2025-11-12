@@ -13,13 +13,22 @@
    This creates:
    - `dist/` folder with all production files
    - `dist/404.html` (automatically created for GitHub Pages SPA routing)
+   - `dist/.nojekyll` (automatically created to prevent Jekyll processing)
+
+3. **IMPORTANT: Deploy ONLY the dist folder contents**
+   - GitHub Pages must serve the built files from `dist/`, NOT the source files
+   - The error "Expected a JavaScript-or-Wasm module script but the server responded with a MIME type of 'text/jsx'" means GitHub Pages is serving source files instead of built files
 
 ## Deployment Options
 
-### Option 1: Deploy dist folder contents to root
-1. Copy all contents from `dist/` to the repository root
-2. Commit and push
-3. GitHub Pages will serve from root
+### Option 1: Deploy dist folder contents to root (Manual)
+1. Build the project: `npm run build`
+2. Copy ALL contents from `dist/` folder to the repository root
+3. Make sure `.nojekyll` file is in the root
+4. Commit and push
+5. GitHub Pages will serve from root
+
+**⚠️ WARNING**: Make sure you're copying the BUILT files from `dist/`, not the source files from `src/`. The built files will have `.js` extensions, not `.jsx`.
 
 ### Option 2: Use GitHub Actions (Recommended)
 Create `.github/workflows/deploy.yml`:

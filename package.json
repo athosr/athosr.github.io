@@ -7,6 +7,7 @@
     "setup": "node scripts/setup-images.cjs",
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "node scripts/post-build.cjs",
     "preview": "vite preview"
   },
   "dependencies": {
