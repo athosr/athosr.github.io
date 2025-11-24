@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { portfolioProjects, personalInfo } from '../data/portfolio';
@@ -8,6 +9,11 @@ const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const project = portfolioProjects.find((p) => p.id === id);
+
+  // Scroll to top when component mounts or when project id changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [id]);
 
   if (!project) {
     return (
