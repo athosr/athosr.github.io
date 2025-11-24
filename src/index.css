@@ -5,13 +5,27 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-white text-gray-900 antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #111827;
+  }
+
+  html.dark {
+    --bg-color: #111827;
+    --text-color: #f9fafb;
   }
 
   html {
     scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
@@ -27,15 +41,15 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100;
+  @apply bg-gray-100 dark:bg-gray-800;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-full;
+  @apply bg-gray-300 dark:bg-gray-600 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400;
+  @apply bg-gray-400 dark:bg-gray-500;
 }
 
 /* Smooth transitions */

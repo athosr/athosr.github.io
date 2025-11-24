@@ -2,11 +2,19 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { personalInfo } from '../data/portfolio';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { isDark, toggleTheme } = useTheme();
+
+  const handleThemeToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleTheme();
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +37,7 @@ const Navbar = () => {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm'
+          ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm'
           : 'bg-transparent'
       }`}
     >
@@ -38,7 +46,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             to="/"
-            className="text-2xl font-bold text-gray-900 hover:text-primary-600 transition-colors"
+            className="text-2xl font-bold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors z-10 relative"
           >
             {personalInfo.name}
           </Link>
@@ -52,7 +60,7 @@ const Navbar = () => {
                   href={link.path}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+                  className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
                 >
                   {link.label}
                 </a>
@@ -62,8 +70,8 @@ const Navbar = () => {
                   to={link.path}
                   className={`font-medium transition-colors ${
                     location.pathname === link.path
-                      ? 'text-primary-600'
-                      : 'text-gray-700 hover:text-primary-600'
+                      ? 'text-primary-600 dark:text-primary-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'
                   }`}
                 >
                   {link.label}
@@ -72,13 +80,30 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Social Links */}
+          {/* Theme Toggle & Social Links */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={handleThemeToggle}
+              className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Toggle dark mode"
+              type="button"
+            >
+              {isDark ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
             <a
               href={personalInfo.social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 hover:text-primary-600 transition-colors"
+              className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
               aria-label="LinkedIn"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -89,7 +114,7 @@ const Navbar = () => {
               href={personalInfo.social.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 hover:text-primary-600 transition-colors"
+              className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
               aria-label="GitHub"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -98,12 +123,29 @@ const Navbar = () => {
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-gray-700 focus:outline-none"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
+          {/* Mobile Menu Button & Theme Toggle */}
+          <div className="md:hidden flex items-center space-x-2">
+            <button
+              onClick={handleThemeToggle}
+              className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Toggle dark mode"
+              type="button"
+            >
+              {isDark ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
+            <button
+              className="text-gray-700 dark:text-gray-300 focus:outline-none"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
             <svg
               className="w-6 h-6"
               fill="none"
@@ -120,6 +162,7 @@ const Navbar = () => {
               )}
             </svg>
           </button>
+          </div>
         </div>
       </div>
 
@@ -130,7 +173,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-200"
+            className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700"
           >
             <div className="px-4 py-4 space-y-4">
               {navLinks.map((link) => (
@@ -140,7 +183,7 @@ const Navbar = () => {
                     href={link.path}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-gray-700 hover:text-primary-600 font-medium"
+                    className="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.label}
@@ -151,8 +194,8 @@ const Navbar = () => {
                     to={link.path}
                     className={`block font-medium ${
                       location.pathname === link.path
-                        ? 'text-primary-600'
-                        : 'text-gray-700 hover:text-primary-600'
+                        ? 'text-primary-600 dark:text-primary-400'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'
                     }`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
@@ -160,12 +203,12 @@ const Navbar = () => {
                   </Link>
                 )
               ))}
-              <div className="flex items-center space-x-4 pt-4 border-t border-gray-200">
+              <div className="flex items-center space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <a
                   href={personalInfo.social.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-primary-600"
+                  className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
                   aria-label="LinkedIn"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -176,7 +219,7 @@ const Navbar = () => {
                   href={personalInfo.social.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-primary-600"
+                  className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
                   aria-label="GitHub"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

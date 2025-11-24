@@ -3,7 +3,7 @@ import { personalInfo } from '../data/portfolio';
 
 const About = () => {
   return (
-    <section className="py-20 sm:py-32 bg-white">
+    <section className="py-20 sm:py-32 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div
@@ -20,7 +20,7 @@ const About = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary-100 rounded-2xl -z-10" />
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary-100 dark:bg-primary-900 rounded-2xl -z-10" />
           </motion.div>
 
           <motion.div
@@ -29,10 +29,10 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               A little about me
             </h2>
-            <div className="space-y-4 text-lg text-gray-700 leading-relaxed mb-8">
+            <div className="space-y-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-8">
               {personalInfo.bio.split('\n\n').map((paragraph, idx) => (
                 <p key={idx}>{paragraph}</p>
               ))}
@@ -43,7 +43,7 @@ const About = () => {
                 href={personalInfo.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-primary-600 hover:text-white transition-colors"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-primary-600 dark:hover:bg-primary-500 hover:text-white transition-colors"
                 aria-label="LinkedIn"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@ const About = () => {
                 href={personalInfo.social.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-primary-600 hover:text-white transition-colors"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-primary-600 dark:hover:bg-primary-500 hover:text-white transition-colors"
                 aria-label="GitHub"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -73,11 +73,11 @@ const About = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mt-20"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6 text-center">
             Resume
           </h2>
           <div className="flex justify-center">
-            <div className="w-full max-w-4xl bg-gray-50 rounded-2xl p-4 sm:p-8 shadow-lg">
+            <div className="w-full max-w-4xl bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-8 shadow-lg">
               <embed
                 src={personalInfo.resume}
                 type="application/pdf"
@@ -88,7 +88,7 @@ const About = () => {
                   href={personalInfo.resume}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-600 hover:text-primary-700 font-medium"
+                  className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-500 font-medium"
                 >
                   Click here if it doesn't appear.
                 </a>

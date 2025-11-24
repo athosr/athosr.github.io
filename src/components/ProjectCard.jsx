@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { getProjectDisplayImage } from '../utils/mediaHelpers';
 
 const ProjectCard = ({ project, index }) => {
+  const displayImage = getProjectDisplayImage(project);
+  const hasVideo = project.videoUrl || (project.videoUrls && project.videoUrls.length > 0);
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -14,10 +18,22 @@ const ProjectCard = ({ project, index }) => {
         to={`/work/${project.id}`}
         className="block relative overflow-hidden rounded-2xl bg-gray-100 aspect-[4/3] transition-transform duration-300 hover:scale-[1.02]"
       >
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-          style={{ backgroundImage: `url(${project.image})` }}
-        />
+        {displayImage ? (
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+            style={{ backgroundImage: `url(${displayImage})` }}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+            <div className="text-white text-center">
+              {hasVideo && (
+                <svg className="w-16 h-16 mx-auto mb-2 opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </div>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
           <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">

@@ -23,8 +23,9 @@ Perfect for job seekers, career switchers, and students, CareerXR provides a uni
     categories: ['VR', 'RPG'],
     role: ['Lead VR Developer'],
     videoUrl: null,
+    videoUrls: ['https://www.youtube.com/embed/EW-nBn2Tetc', 'https://www.youtube.com/embed/zGW4Z8UhhQ8'],
     websiteUrl: null,
-    gallery: ['/images/obnd/obnd1.png', '/images/obnd/obnd2.png', '/images/obnd/obnd3.png'],
+    gallery: null,
   },
   {
     id: 'yur',
@@ -36,7 +37,7 @@ Perfect for job seekers, career switchers, and students, CareerXR provides a uni
     role: ['Gameplay Engineer'],
     videoUrl: null,
     websiteUrl: 'https://yur.world/',
-    gallery: ['/images/yur/yur1.png', '/images/yur/yur2.png', '/images/yur/yur3.png'],
+    gallery: null,
   },
   {
     id: 'oww',
