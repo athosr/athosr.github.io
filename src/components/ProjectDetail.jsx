@@ -162,69 +162,70 @@ const ProjectDetail = () => {
               </motion.a>
             )}
 
-            {/* Videos below content (if image exists in hero) */}
-            {project.image && hasVideos && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className={`mb-12 ${videos.length > 1 ? 'space-y-8' : ''}`}
-              >
-                {videos.map((videoUrl, idx) => (
-                  <motion.div
-                    key={`video-below-${idx}-${videoUrl}`}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 + idx * 0.1 }}
-                    className="rounded-2xl overflow-hidden shadow-xl bg-black"
-                  >
-                    <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', width: '100%' }}>
-                      <iframe
-                        src={videoUrl}
-                        title={`${project.title} - Video ${idx + 1}`}
-                        style={{ 
-                          position: 'absolute', 
-                          top: 0, 
-                          left: 0, 
-                          width: '100%', 
-                          height: '100%', 
-                          border: 0 
-                        }}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        loading="lazy"
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            )}
 
-            {/* Gallery */}
-            {project.gallery && project.gallery.length > 0 && !project.isDataProjects && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12"
-              >
-                {project.gallery.map((image, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, delay: 0.6 + idx * 0.1 }}
-                    className="rounded-xl overflow-hidden shadow-lg"
-                  >
-                    <img
-                      src={image}
-                      alt={`${project.title} screenshot ${idx + 1}`}
-                      className="w-full h-auto object-cover"
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-            )}
+            {/* Gallery - Includes images and videos */}
+            {(() => {
+              const galleryItems = [];
+              
+              // Add videos first if they exist
+              if (hasVideos) {
+                videos.forEach((videoUrl) => {
+                  galleryItems.push({ type: 'video', url: videoUrl });
+                });
+              }
+              
+              // Add gallery images
+              if (project.gallery && project.gallery.length > 0) {
+                project.gallery.forEach((image) => {
+                  galleryItems.push({ type: 'image', url: image });
+                });
+              }
+              
+              return galleryItems.length > 0 && !project.isDataProjects ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12"
+                >
+                  {galleryItems.map((item, idx) => (
+                    <motion.div
+                      key={`${item.type}-${idx}-${item.url}`}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: 0.6 + idx * 0.1 }}
+                      className="rounded-xl overflow-hidden shadow-lg"
+                    >
+                      {item.type === 'video' ? (
+                        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', width: '100%' }}>
+                          <iframe
+                            src={item.url}
+                            title={`${project.title} - Video ${idx + 1}`}
+                            style={{ 
+                              position: 'absolute', 
+                              top: 0, 
+                              left: 0, 
+                              width: '100%', 
+                              height: '100%', 
+                              border: 0 
+                            }}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            loading="lazy"
+                          />
+                        </div>
+                      ) : (
+                        <img
+                          src={item.url}
+                          alt={`${project.title} screenshot ${idx + 1}`}
+                          className="w-full h-auto object-cover"
+                        />
+                      )}
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : null;
+            })()}
 
             {/* Data Projects - Special Layout */}
             {project.isDataProjects && project.projects && (
