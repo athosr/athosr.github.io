@@ -1,4 +1,10 @@
-<!doctype html>
+const fs = require('fs');
+const path = require('path');
+
+const rootPath = path.join(__dirname, '..');
+const indexPath = path.join(rootPath, 'index.html');
+
+const sourceIndexContent = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -25,14 +31,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/vendor-Bp0i8vgi-DiDyq02U-DiDyq02U.js">
-    <link rel="modulepreload" crossorigin href="/assets/router-DfC7HiYo-B2QUpwzA-B2QUpwzA.js">
-    <link rel="modulepreload" crossorigin href="/assets/motion-hWeiHczv-BKm1Mw6H-BKm1Mw6H.js">
-    <script type="module" crossorigin src="/assets/index-BQeXd9Wy.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-fy3YMbOZ.css">
   </head>
   <body>
     <div id="root"></div>
-
+    <script type="module" src="/src/main.jsx"></script>
   </body>
-</html>
+</html>`;
+
+fs.writeFileSync(indexPath, sourceIndexContent);
+console.log('✓ Restored source index.html for development');
+
