@@ -1,19 +1,72 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { portfolioProjects, personalInfo } from '../data/portfolio';
 import CodeBlock from './CodeBlock';
+import ImageGallery from './ImageGallery';
 import { getAllVideos, hasMedia } from '../utils/mediaHelpers';
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const project = portfolioProjects.find((p) => p.id === id);
+  const [galleryIndex, setGalleryIndex] = useState(null);
 
   // Scroll to top when component mounts or when project id changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [id]);
+
+  // Ensure body scroll is restored when component unmounts
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  // Collect all images for the gallery
+  const allImages = useMemo(() => {
+    if (!project) return [];
+    
+    const images = [];
+    
+    // Add hero image if it exists
+    if (project.image) {
+      images.push(project.image);
+    }
+    
+    // Add gallery images if they exist
+    if (project.gallery && project.gallery.length > 0) {
+      images.push(...project.gallery);
+    }
+    
+    // Add sub-project images for data projects
+    if (project.isDataProjects && project.projects) {
+      project.projects.forEach((subProject) => {
+        if (subProject.images && subProject.images.length > 0) {
+          images.push(...subProject.images);
+        }
+      });
+    }
+    
+    return images;
+  }, [project]);
+
+  const openGallery = (index) => {
+    setGalleryIndex(index);
+  };
+
+  const closeGallery = () => {
+    setGalleryIndex(null);
+  };
+
+  const navigateGallery = (direction) => {
+    if (galleryIndex === null) return;
+    const newIndex = galleryIndex + direction;
+    if (newIndex >= 0 && newIndex < allImages.length) {
+      setGalleryIndex(newIndex);
+    }
+  };
 
   if (!project) {
     return (
@@ -51,12 +104,14 @@ const ProjectDetail = () => {
         {/* Hero Media Section */}
         {(() => {
           if (project.image) {
+            const imageIndex = allImages.indexOf(project.image);
             return (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="mb-12 rounded-2xl overflow-hidden shadow-2xl"
+                className="mb-12 rounded-2xl overflow-hidden shadow-2xl cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={() => openGallery(imageIndex)}
               >
                 <img
                   src={project.image}
@@ -218,7 +273,13 @@ const ProjectDetail = () => {
                         <img
                           src={item.url}
                           alt={`${project.title} screenshot ${idx + 1}`}
-                          className="w-full h-auto object-cover"
+                          className="w-full h-auto object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                          onClick={() => {
+                            const imageIndex = allImages.indexOf(item.url);
+                            if (imageIndex !== -1) {
+                              openGallery(imageIndex);
+                            }
+                          }}
                         />
                       )}
                     </motion.div>
@@ -257,21 +318,29 @@ const ProjectDetail = () => {
                     {/* Project Images */}
                     {subProject.images && subProject.images.length > 0 && (
                       <div className="grid grid-cols-1 gap-6 my-8">
-                        {subProject.images.map((image, idx) => (
-                          <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.4, delay: 0.1 * idx }}
-                            className="rounded-xl overflow-hidden shadow-lg"
-                          >
-                            <img
-                              src={image}
-                              alt={`${subProject.title} ${idx + 1}`}
-                              className="w-full h-auto object-cover"
-                            />
-                          </motion.div>
-                        ))}
+                        {subProject.images.map((image, idx) => {
+                          const imageIndex = allImages.indexOf(image);
+                          return (
+                            <motion.div
+                              key={idx}
+                              initial={{ opacity: 0, scale: 0.95 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.4, delay: 0.1 * idx }}
+                              className="rounded-xl overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
+                              onClick={() => {
+                                if (imageIndex !== -1) {
+                                  openGallery(imageIndex);
+                                }
+                              }}
+                            >
+                              <img
+                                src={image}
+                                alt={`${subProject.title} ${idx + 1}`}
+                                className="w-full h-auto object-cover"
+                              />
+                            </motion.div>
+                          );
+                        })}
                       </div>
                     )}
 
@@ -324,6 +393,14 @@ const ProjectDetail = () => {
           </a>
         </motion.div>
       </div>
+
+      {/* Image Gallery Modal */}
+      <ImageGallery
+        images={allImages}
+        currentIndex={galleryIndex}
+        onClose={closeGallery}
+        onNavigate={navigateGallery}
+      />
     </div>
   );
 };
