@@ -34,6 +34,9 @@ const ProjectCard = ({ project, index }) => {
             </div>
           </div>
         )}
+        {/* Permanent subtle overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        {/* Enhanced overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
           <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
