@@ -1,15 +1,15 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { portfolioProjects, personalInfo } from '../data/portfolio';
-import CodeBlock from './CodeBlock';
+import { personalInfo } from '../data/portfolio';
 import ImageGallery from './ImageGallery';
-import { getAllVideos, hasMedia } from '../utils/mediaHelpers';
+import { getAllVideos } from '../utils/mediaHelpers';
+import { getWorkProjectById } from '../utils/work';
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const project = portfolioProjects.find((p) => p.id === id);
+  const project = getWorkProjectById(id);
   const [galleryIndex, setGalleryIndex] = useState(null);
 
   // Scroll to top when component mounts or when project id changes
@@ -38,15 +38,6 @@ const ProjectDetail = () => {
     // Add gallery images if they exist
     if (project.gallery && project.gallery.length > 0) {
       images.push(...project.gallery);
-    }
-    
-    // Add sub-project images for data projects
-    if (project.isDataProjects && project.projects) {
-      project.projects.forEach((subProject) => {
-        if (subProject.images && subProject.images.length > 0) {
-          images.push(...subProject.images);
-        }
-      });
     }
     
     return images;
@@ -236,7 +227,7 @@ const ProjectDetail = () => {
                 });
               }
               
-              return galleryItems.length > 0 && !project.isDataProjects ? (
+              return galleryItems.length > 0 ? (
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -288,88 +279,6 @@ const ProjectDetail = () => {
               ) : null;
             })()}
 
-            {/* Data Projects - Special Layout */}
-            {project.isDataProjects && project.projects && (
-              <div className="space-y-16 mt-12">
-                {project.projects.map((subProject, projectIdx) => (
-                  <motion.div
-                    key={projectIdx}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 + projectIdx * 0.1 }}
-                    className="border-t border-gray-200 dark:border-gray-700 pt-12"
-                  >
-                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-                      {subProject.title}
-                    </h2>
-
-                    <p className="text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                      {subProject.description}
-                    </p>
-
-                    {subProject.details && subProject.details.length > 0 && (
-                      <ul className="list-disc list-inside space-y-2 mb-6 text-gray-700 dark:text-gray-300">
-                        {subProject.details.map((detail, idx) => (
-                          <li key={idx}>{detail}</li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {/* Project Images */}
-                    {subProject.images && subProject.images.length > 0 && (
-                      <div className="grid grid-cols-1 gap-6 my-8">
-                        {subProject.images.map((image, idx) => {
-                          const imageIndex = allImages.indexOf(image);
-                          return (
-                            <motion.div
-                              key={idx}
-                              initial={{ opacity: 0, scale: 0.95 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ duration: 0.4, delay: 0.1 * idx }}
-                              className="rounded-xl overflow-hidden shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
-                              onClick={() => {
-                                if (imageIndex !== -1) {
-                                  openGallery(imageIndex);
-                                }
-                              }}
-                            >
-                              <img
-                                src={image}
-                                alt={`${subProject.title} ${idx + 1}`}
-                                className="w-full h-auto object-cover"
-                              />
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {/* Code Block */}
-                    {subProject.code && (
-                      <CodeBlock
-                        code={subProject.code.content}
-                        language={subProject.code.language}
-                        title="Show Code"
-                      />
-                    )}
-
-                    {/* Additional Code Block */}
-                    {subProject.additionalCode && (
-                      <div className="mt-6">
-                        <p className="text-gray-700 dark:text-gray-300 mb-4">
-                          {subProject.additionalCode.description}
-                        </p>
-                        <CodeBlock
-                          code={subProject.additionalCode.content}
-                          language={subProject.additionalCode.language}
-                          title="Show Code"
-                        />
-                      </div>
-                    )}
-                  </motion.div>
-                ))}
-              </div>
-            )}
           </motion.div>
         </div>
 

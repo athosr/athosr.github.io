@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import ProjectCard from './ProjectCard';
-import { portfolioProjects } from '../data/portfolio';
+import { workProjects } from '../utils/work';
 
 const ProjectGrid = () => {
   return (
@@ -22,7 +22,7 @@ const ProjectGrid = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {portfolioProjects.map((project, index) => (
+          {workProjects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
