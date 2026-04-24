@@ -6,7 +6,7 @@ tags: rag,electron,python,postgres
 summary: I built a local-first RAG desktop app that ingests personal documents, runs retrieval with pgvector/pgvectorscale, and returns grounded answers with citations.
 ---
 
-Last week I worked on LocalRAG Studio, an open-source desktop app that lets you chat with your own documents through a fully local, privacy-focused RAG pipeline.
+Last week I worked on [LocalRAG Studio](https://github.com/athosr/LocalRAG_Studio), an open-source desktop app that lets you chat with your own documents through a fully local, privacy-focused RAG pipeline.
 
 ![Feature progress screenshot](/devlog/localragstudio.png)
 
