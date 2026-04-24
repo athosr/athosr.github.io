@@ -26,6 +26,7 @@ const Navbar = () => {
 
   const navLinks = [
     { path: '/work', label: 'Work' },
+    { path: '/devlog', label: 'Devlog' },
     { path: '/about', label: 'Profile' },
     { path: personalInfo.social.linkedin, label: 'Contact', external: true },
   ];

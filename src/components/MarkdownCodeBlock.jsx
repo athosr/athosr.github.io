@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const CodeBlock = ({ code, language, title = 'Show Code' }) => {
+const MarkdownCodeBlock = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const codeContainerRef = useRef(null);
 
   useEffect(() => {
-    if (isOpen && window.Prism) {
-      // Re-run Prism highlighting when code block is opened
-      window.Prism.highlightAll();
+    if (isOpen && window.Prism && codeContainerRef.current) {
+      window.Prism.highlightAllUnder(codeContainerRef.current);
     }
   }, [isOpen]);
 
@@ -24,22 +24,23 @@ const CodeBlock = ({ code, language, title = 'Show Code' }) => {
         className="px-6 py-3 bg-primary-600 dark:bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors shadow-md"
         type="button"
       >
-        {isOpen ? 'Hide Code' : title}
+        {isOpen ? 'Hide Code' : 'Show Code'}
       </motion.button>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             className="mt-4 overflow-hidden"
           >
-            <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl">
-              <pre className="text-sm">
-                <code className={`language-${language}`}>{code}</code>
-              </pre>
+            <div
+              ref={codeContainerRef}
+              className="bg-gray-900 rounded-lg overflow-hidden shadow-xl"
+            >
+              <pre className="text-sm mb-0 overflow-x-auto p-4">{children}</pre>
             </div>
           </motion.div>
         )}
@@ -48,5 +49,4 @@ const CodeBlock = ({ code, language, title = 'Show Code' }) => {
   );
 };
 
-export default CodeBlock;
-
+export default MarkdownCodeBlock;

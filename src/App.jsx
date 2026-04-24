@@ -5,6 +5,8 @@ import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Work from './pages/Work';
 import AboutPage from './pages/AboutPage';
+import Devlog from './pages/Devlog';
+import DevlogPost from './pages/DevlogPost';
 import ProjectDetail from './components/ProjectDetail';
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/work" element={<Work />} />
             <Route path="/work/:id" element={<ProjectDetail />} />
+            <Route path="/devlog" element={<Devlog />} />
+            <Route path="/devlog/:slug" element={<DevlogPost />} />
             <Route path="/about" element={<AboutPage />} />
           </Routes>
         </div>
