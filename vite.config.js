@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [react()],
   base: '/',
   publicDir: 'public',
+  resolve: {
+    dedupe: ['react', 'react-dom'],
+  },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
@@ -19,20 +22,9 @@ export default defineConfig({
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
       output: {
-        /**
-         * The object form `manualChunks: { vendor: ['react'], ... }` makes Vite 5 /
-         * Rollup 4 emit empty placeholder chunks. A function id → chunk name avoids that.
-         *
-         * Rollup `id` may use `\` on Windows; `includes('/react/')` would miss `node_modules\react\`
-         * and collapse everything into one huge entry chunk.
-         */
+        /** One vendor chunk keeps a single React instance and stable init order. */
         manualChunks(id) {
-          if (!id.includes('node_modules')) return;
-          const norm = id.replace(/\\/g, '/');
-          if (norm.includes('react-router')) return 'router';
-          if (norm.includes('framer-motion')) return 'motion';
-          if (norm.includes('react-pdf') || norm.includes('pdfjs-dist')) return 'pdf';
-          if (norm.includes('react-dom') || norm.includes('/react/')) return 'vendor';
+          if (id.includes('node_modules')) return 'vendor';
         },
       },
     },
@@ -42,4 +34,3 @@ export default defineConfig({
     open: true
   }
 })
-
