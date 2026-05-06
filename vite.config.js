@@ -14,20 +14,7 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'esbuild', // Use esbuild (built-in) instead of terser
-    /**
-     * Rollup warns when any chunk exceeds this (minified size). The main chunk includes
-     * app code plus eager devlog `.md` (see `src/utils/devlog.js` + Home preview). ~1.2 MB
-     * raw / ~350+ kB gzip is normal here; GitHub Pages does not impose a stricter limit.
-     */
-    chunkSizeWarningLimit: 1500,
-    rollupOptions: {
-      output: {
-        /** One vendor chunk keeps a single React instance and stable init order. */
-        manualChunks(id) {
-          if (id.includes('node_modules')) return 'vendor';
-        },
-      },
-    },
+    chunkSizeWarningLimit: 2000,
   },
   server: {
     port: 3000,

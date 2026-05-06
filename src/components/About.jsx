@@ -1,8 +1,6 @@
-import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { personalInfo } from '../data/portfolio';
-
-const ResumeInlinePdf = lazy(() => import('./ResumeInlinePdf'));
+import ResumeInlinePdf from './ResumeInlinePdf';
 
 const About = () => {
   return (
@@ -93,15 +91,7 @@ const About = () => {
           </h2>
           <div className="flex justify-center">
             <div className="w-full max-w-4xl rounded-2xl border border-slate-200/90 bg-gray-50 p-4 shadow-lg dark:border-slate-600/50 dark:bg-gray-800 sm:p-6">
-              <Suspense
-                fallback={
-                  <div className="flex min-h-[28rem] items-center justify-center rounded-lg border border-dashed border-slate-300/80 bg-white/50 text-sm text-slate-500 dark:border-slate-600 dark:bg-slate-900/30 dark:text-slate-400">
-                    Loading resume preview…
-                  </div>
-                }
-              >
-                <ResumeInlinePdf fileUrl={personalInfo.resume} />
-              </Suspense>
+              <ResumeInlinePdf fileUrl={personalInfo.resume} />
               <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
                 <a
                   href={personalInfo.resume}

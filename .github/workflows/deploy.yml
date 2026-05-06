@@ -16,6 +16,9 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Required by actions/deploy-pages@v4 (otherwise: Missing environment)
+    environment:
+      name: github-pages
     steps:
       - name: Checkout
         uses: actions/checkout@v4
