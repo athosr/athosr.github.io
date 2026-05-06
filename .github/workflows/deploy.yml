@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main, master ]
 
+# Opt into Node 24 for JS-based actions until it is the default (see GitHub changelog).
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: read
   pages: write
@@ -16,37 +20,41 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    # Required by actions/deploy-pages@v4 (otherwise: Missing environment)
+    # Required by actions/deploy-pages (otherwise: Missing environment)
     environment:
       name: github-pages
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      
+        uses: actions/checkout@v6
+
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '18'
-          cache: 'npm'
-          
+          node-version: "24"
+          cache: "npm"
+
       - name: Install dependencies
         run: npm ci
-        
+
+      # Always rewrite repo-root index.html to the canonical dev source template
+      # so a stale `npm run deploy` artifact in the repo cannot pollute the build.
+      - name: Restore source index.html
+        run: npm run restore-dev
+
       - name: Setup images
         run: npm run setup
-        
+
       - name: Build
         run: npm run build
-        
+
       - name: Setup Pages
-        uses: actions/configure-pages@v4
-        
+        uses: actions/configure-pages@v5
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: './dist'
-          
+          path: "./dist"
+
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
-
+        uses: actions/deploy-pages@v5

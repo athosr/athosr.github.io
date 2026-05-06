@@ -12,6 +12,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    /** Wipe dist/ so old chunk filenames cannot stack hash suffixes across builds. */
+    emptyOutDir: true,
     sourcemap: false,
     minify: 'esbuild', // Use esbuild (built-in) instead of terser
     chunkSizeWarningLimit: 2000,
