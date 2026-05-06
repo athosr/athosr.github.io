@@ -24,6 +24,8 @@
     /* Hide stray blinking carets on non-editable UI (e.g. images in paragraphs). */
     caret-color: transparent;
     min-height: 100dvh;
+    width: 100%;
+    overflow-x: clip;
     background-color: var(--bg-color);
   }
 
@@ -52,6 +54,8 @@
 
   body {
     min-height: 100dvh;
+    width: 100%;
+    overflow-x: hidden;
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
