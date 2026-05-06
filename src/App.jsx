@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { CursorGameProvider } from './contexts/CursorGameContext';
@@ -9,9 +10,10 @@ import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Work from './pages/Work';
 import AboutPage from './pages/AboutPage';
-import Devlog from './pages/Devlog';
-import DevlogPost from './pages/DevlogPost';
 import ProjectDetail from './components/ProjectDetail';
+
+const Devlog = lazy(() => import('./pages/Devlog'));
+const DevlogPost = lazy(() => import('./pages/DevlogPost'));
 
 function App() {
   return (
@@ -30,14 +32,22 @@ function App() {
           <div className="relative z-10 flex min-h-dvh flex-1 flex-col">
             <Navbar />
             <main className="flex w-full flex-1 flex-col">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/work" element={<Work />} />
-                <Route path="/work/:id" element={<ProjectDetail />} />
-                <Route path="/devlog" element={<Devlog />} />
-                <Route path="/devlog/:slug" element={<DevlogPost />} />
-                <Route path="/about" element={<AboutPage />} />
-              </Routes>
+              <Suspense
+                fallback={
+                  <div className="flex min-h-[40vh] flex-1 items-center justify-center text-sm text-slate-500 dark:text-slate-400">
+                    Loading…
+                  </div>
+                }
+              >
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/work" element={<Work />} />
+                  <Route path="/work/:id" element={<ProjectDetail />} />
+                  <Route path="/devlog" element={<Devlog />} />
+                  <Route path="/devlog/:slug" element={<DevlogPost />} />
+                  <Route path="/about" element={<AboutPage />} />
+                </Routes>
+              </Suspense>
             </main>
           </div>
         </div>

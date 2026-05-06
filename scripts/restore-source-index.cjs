@@ -54,4 +54,7 @@ const sourceIndexContent = `<!doctype html>
 
 fs.writeFileSync(indexPath, sourceIndexContent);
 console.log('✓ Restored source index.html for development');
+console.log(
+  '  GitHub Pages needs the *built* index (npm run deploy). Do not commit this dev index as the site root.',
+);
 
