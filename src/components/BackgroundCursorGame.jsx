@@ -9,7 +9,7 @@ import {
   pickGlimmerOrbTier,
   sparkRgba,
 } from '../constants/glimmerOrbTiers';
-import { playGlimmerCollectSound, primeGlimmerAudio } from '../utils/glimmerAudio';
+import { playGlimmerCollectSound } from '../utils/glimmerAudio';
 
 const ORB_COUNT = 16;
 const MIN_ORB_R = 2.5;
@@ -133,12 +133,6 @@ export default function BackgroundCursorGame() {
       if (e.pointerType === 'touch') return;
       mouseRef.current.x = e.clientX;
       mouseRef.current.y = e.clientY;
-      primeGlimmerAudio();
-    };
-
-    const onPointerDown = (e) => {
-      if (e.pointerType === 'touch') return;
-      primeGlimmerAudio();
     };
 
     const onResize = () => {
@@ -150,7 +144,6 @@ export default function BackgroundCursorGame() {
     };
 
     window.addEventListener('pointermove', onPointerMove, { passive: true });
-    window.addEventListener('pointerdown', onPointerDown, { passive: true });
     window.addEventListener('resize', onResize);
     const vv = window.visualViewport;
     if (vv) {
@@ -254,7 +247,6 @@ export default function BackgroundCursorGame() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('resize', onResize);
       if (vv) {
         vv.removeEventListener('resize', onResize);

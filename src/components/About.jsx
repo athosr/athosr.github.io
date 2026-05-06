@@ -1,5 +1,8 @@
+import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { personalInfo } from '../data/portfolio';
+
+const ResumeInlinePdf = lazy(() => import('./ResumeInlinePdf'));
 
 const About = () => {
   return (
@@ -89,20 +92,33 @@ const About = () => {
             Resume
           </h2>
           <div className="flex justify-center">
-            <div className="w-full max-w-4xl bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-8 shadow-lg">
-              <embed
-                src={personalInfo.resume}
-                type="application/pdf"
-                className="w-full h-[600px] sm:h-[800px] rounded-lg"
-              />
-              <div className="mt-4 text-center">
+            <div className="w-full max-w-4xl rounded-2xl border border-slate-200/90 bg-gray-50 p-4 shadow-lg dark:border-slate-600/50 dark:bg-gray-800 sm:p-6">
+              <Suspense
+                fallback={
+                  <div className="flex min-h-[28rem] items-center justify-center rounded-lg border border-dashed border-slate-300/80 bg-white/50 text-sm text-slate-500 dark:border-slate-600 dark:bg-slate-900/30 dark:text-slate-400">
+                    Loading resume preview…
+                  </div>
+                }
+              >
+                <ResumeInlinePdf fileUrl={personalInfo.resume} />
+              </Suspense>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
                 <a
                   href={personalInfo.resume}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-500 font-medium"
+                  data-cursor-hover
+                  className="inline-flex items-center px-7 py-3.5 bg-primary-600 dark:bg-primary-500 text-white font-semibold rounded-full hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors shadow-lg shadow-primary-600/25 hover:shadow-xl hover:shadow-primary-600/30"
                 >
-                  Click here if it doesn't appear.
+                  Open in new tab
+                </a>
+                <a
+                  href={personalInfo.resume}
+                  download
+                  data-cursor-hover
+                  className="inline-flex items-center px-7 py-3.5 bg-white/70 dark:bg-slate-800/80 backdrop-blur-sm text-slate-900 dark:text-white font-semibold rounded-full border border-slate-200/90 dark:border-slate-600/80 hover:border-primary-500/60 dark:hover:border-primary-400/50 hover:text-primary-600 dark:hover:text-primary-300 transition-colors"
+                >
+                  Download PDF
                 </a>
               </div>
             </div>

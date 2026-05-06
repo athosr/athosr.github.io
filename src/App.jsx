@@ -17,7 +17,12 @@ function App() {
   return (
     <ThemeProvider>
       <CursorGameProvider>
-      <Router>
+      <Router
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <ScrollToTop />
         <div className="App relative flex min-h-dvh w-full flex-1 flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
           <CursorAura />
