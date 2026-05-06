@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { useCursorPlayEnabled } from '../hooks/useCursorPlayEnabled';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useGlimmerGameEnabled } from '../hooks/useCursorPlayEnabled';
 import { useCursorGame } from '../contexts/CursorGameContext';
 import { glimmerMilestonesWithUnlocks } from '../constants/glimmerAchievements';
 import {
@@ -44,7 +44,7 @@ function spawnOrb(w, h, mx, my, glimmerScore) {
 }
 
 export default function BackgroundCursorGame() {
-  const enabled = useCursorPlayEnabled();
+  const enabled = useGlimmerGameEnabled();
   const canvasRef = useRef(null);
   const hudRef = useRef(null);
   const { glimmerScore, setGlimmerScore } = useCursorGame();
@@ -71,7 +71,7 @@ export default function BackgroundCursorGame() {
     };
   }, [achievementsOpen]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!enabled) return;
 
     const canvas = canvasRef.current;
