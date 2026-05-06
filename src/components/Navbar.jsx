@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { personalInfo } from '../data/portfolio';
+import { LINKEDIN_CONTACT_HREF, personalInfo } from '../data/portfolio';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Navbar = () => {
@@ -31,7 +31,7 @@ const Navbar = () => {
     { path: '/work', label: 'Work' },
     { path: '/devlog', label: 'Devlog' },
     { path: '/about', label: 'Profile' },
-    { path: personalInfo.social.linkedin, label: 'Contact', external: true },
+    { path: LINKEDIN_CONTACT_HREF, label: 'Contact', external: true },
   ];
 
   return (
@@ -104,7 +104,7 @@ const Navbar = () => {
               )}
             </button>
             <a
-              href={personalInfo.social.linkedin}
+              href={LINKEDIN_CONTACT_HREF}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
@@ -220,7 +220,7 @@ const Navbar = () => {
               ))}
               <div className="flex items-center space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <a
-                  href={personalInfo.social.linkedin}
+                  href={LINKEDIN_CONTACT_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"

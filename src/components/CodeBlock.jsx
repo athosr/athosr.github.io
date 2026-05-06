@@ -45,7 +45,7 @@ const CodeBlock = ({ code, language, title = 'Show Code' }) => {
       >
         <div className="flex min-w-0 items-center gap-3">
           <span
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors group-hover:border-slate-300 group-hover:text-primary-600 dark:border-slate-700/80 dark:bg-slate-800/90 dark:text-slate-400 dark:shadow-none dark:group-hover:border-slate-600 dark:group-hover:text-primary-400"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors group-hover:border-slate-300 group-hover:text-primary-600 dark:border-slate-700/80 dark:bg-slate-800/90 dark:text-slate-400 dark:shadow-none dark:group-hover:border-slate-600 dark:group-hover:text-primary-400"
             aria-hidden
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -61,7 +61,7 @@ const CodeBlock = ({ code, language, title = 'Show Code' }) => {
             </p>
           </div>
         </div>
-        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all duration-200 group-hover:border-primary-400/40 group-hover:text-primary-700 dark:border-slate-600/70 dark:bg-slate-800/80 dark:text-slate-200 dark:group-hover:border-primary-500/35 dark:group-hover:bg-slate-800 dark:group-hover:text-primary-200">
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all duration-200 group-hover:border-primary-400/40 group-hover:text-primary-700 dark:border-slate-600/70 dark:bg-slate-800/80 dark:text-slate-200 dark:group-hover:border-primary-500/35 dark:group-hover:bg-slate-800 dark:group-hover:text-primary-200">
           {isOpen ? 'Hide' : 'Show'}
           <svg
             className={`h-3.5 w-3.5 text-slate-500 transition-transform duration-200 group-hover:text-primary-600 dark:text-slate-400 dark:group-hover:text-primary-300 ${isOpen ? 'rotate-180' : ''}`}

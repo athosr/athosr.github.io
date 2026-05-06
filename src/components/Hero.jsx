@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { personalInfo } from '../data/portfolio';
+import { LINKEDIN_CONTACT_HREF, personalInfo } from '../data/portfolio';
 
 const Hero = () => {
   return (
@@ -67,7 +67,7 @@ const Hero = () => {
             className="flex flex-wrap justify-center gap-4"
           >
             <a
-              href={personalInfo.social.linkedin}
+              href={LINKEDIN_CONTACT_HREF}
               target="_blank"
               rel="noopener noreferrer"
               data-cursor-hover

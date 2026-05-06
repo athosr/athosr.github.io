@@ -23,7 +23,7 @@ const DevlogPost = () => {
               </p>
               <Link
                 to="/devlog"
-                className="inline-flex items-center px-5 py-2.5 rounded-lg text-sm font-semibold bg-primary-600 text-white hover:bg-primary-700 transition-colors"
+                className="inline-flex items-center rounded-full bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-600/25 transition-colors hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-600/30 dark:bg-primary-500 dark:hover:bg-primary-600"
               >
                 Back to Devlog
               </Link>
@@ -47,7 +47,7 @@ const DevlogPost = () => {
           >
             <Link
               to="/devlog"
-              className="inline-flex items-center text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 mb-6"
+              className="mb-6 inline-flex items-center rounded-full border border-slate-200/90 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-800 backdrop-blur-sm transition-colors hover:border-primary-500/55 hover:text-primary-600 dark:border-slate-600/80 dark:bg-slate-800/80 dark:text-slate-100 dark:hover:border-primary-400/45 dark:hover:text-primary-300"
             >
               Back to devlog
             </Link>

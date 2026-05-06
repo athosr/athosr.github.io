@@ -1,3 +1,6 @@
+/** Primary contact link: Hero, work CTAs, Navbar “Contact”, footer, etc. */
+export const LINKEDIN_CONTACT_HREF = 'https://www.linkedin.com/in/athos-santos/';
+
 export const personalInfo = {
   name: 'Athos Santos',
   title: 'Software Engineer & Game Developer',
@@ -7,7 +10,7 @@ For years now I've been working professionally on multiple titles for many platf
   image: '/images/me.jpg?v=20260424-3',
   resume: '/assets/Athos Santos - Resume.pdf',
   social: {
-    linkedin: 'https://www.linkedin.com/in/athos-santos/',
+    linkedin: LINKEDIN_CONTACT_HREF,
     github: 'https://github.com/athosr',
     whatsapp: 'https://wa.me/5581996692111',
     facebook: 'https://www.facebook.com/athosrls',

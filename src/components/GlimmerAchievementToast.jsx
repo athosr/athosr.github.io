@@ -73,7 +73,7 @@ export default function GlimmerAchievementToast() {
           <button
             type="button"
             onClick={() => setToast(null)}
-            className="mt-3 text-xs font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+            className="mt-3 inline-flex rounded-full border border-primary-500/35 bg-primary-500/5 px-3 py-1.5 text-xs font-medium text-primary-600 transition-colors hover:border-primary-500/50 hover:bg-primary-500/10 dark:border-primary-400/40 dark:text-primary-400 dark:hover:border-primary-400/55 dark:hover:bg-primary-400/10"
           >
             Dismiss
           </button>

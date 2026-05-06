@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { personalInfo } from '../data/portfolio';
+import { LINKEDIN_CONTACT_HREF, personalInfo } from '../data/portfolio';
 import ImageGallery from './ImageGallery';
 import { getAllVideos } from '../utils/mediaHelpers';
 import { getWorkProjectById } from '../utils/work';
@@ -200,7 +200,7 @@ const ProjectDetail = () => {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center px-6 py-3 bg-primary-600 dark:bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors shadow-lg mb-8"
+                className="mb-8 inline-flex items-center rounded-full bg-primary-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-primary-600/25 transition-colors hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-600/30 dark:bg-primary-500 dark:hover:bg-primary-600"
               >
                 Visit Website
                 <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,21 +284,21 @@ const ProjectDetail = () => {
           </motion.div>
         </div>
 
-        {/* CTA Section */}
+        {/* CTA Section — glass panel to match Hero / rest of site */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.7 }}
-          className="mt-20 text-center bg-gray-50 dark:bg-gray-800 rounded-2xl p-12"
+          className="mt-20 rounded-2xl border border-slate-200/90 bg-white/72 p-10 text-center shadow-lg shadow-slate-900/5 backdrop-blur-sm dark:border-slate-600/50 dark:bg-slate-800/60 dark:shadow-black/20 sm:p-12"
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="mb-4 font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
             Let's work together
           </h2>
           <a
-            href={personalInfo.social.linkedin}
+            href={LINKEDIN_CONTACT_HREF}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center px-8 py-4 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors shadow-lg"
+            className="inline-flex items-center px-7 py-3.5 bg-primary-600 font-semibold text-white shadow-lg shadow-primary-600/25 transition-colors hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-600/30 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-full"
           >
             Get in touch
           </a>

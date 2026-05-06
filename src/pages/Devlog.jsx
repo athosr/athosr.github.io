@@ -83,7 +83,7 @@ const Devlog = () => {
                   <div className="relative z-[2] flex flex-wrap items-center gap-4 pointer-events-none">
                     <button
                       onClick={() => toggleEntry(entry.slug)}
-                      className="pointer-events-auto inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="pointer-events-auto inline-flex items-center rounded-full bg-gray-100 px-5 py-2 text-sm font-medium text-gray-800 transition-colors hover:bg-gray-200 dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-slate-600"
                       type="button"
                     >
                       {isExpanded ? 'Collapse' : 'Expand'}

@@ -57,7 +57,7 @@ const DevlogPreview = () => {
         <div className="text-center mt-10">
           <Link
             to="/devlog"
-            className="inline-flex items-center px-6 py-3 rounded-lg font-semibold bg-primary-600 text-white hover:bg-primary-700 transition-colors"
+            className="inline-flex items-center rounded-full bg-primary-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-primary-600/25 transition-colors hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-600/30 dark:bg-primary-500 dark:hover:bg-primary-600"
           >
             View all devlog posts
           </Link>

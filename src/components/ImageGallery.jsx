@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ImageGallery = ({ images, currentIndex, onClose, onNavigate }) => {
@@ -42,14 +43,14 @@ const ImageGallery = ({ images, currentIndex, onClose, onNavigate }) => {
   const hasPrevious = currentIndex > 0;
   const hasNext = currentIndex < images.length - 1;
 
-  return (
+  const modal = (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
+        className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 p-4 pt-16 pb-20 backdrop-blur-sm sm:p-6 sm:pt-14 sm:pb-16"
         onClick={onClose}
       >
         {/* Close Button */}
@@ -58,16 +59,16 @@ const ImageGallery = ({ images, currentIndex, onClose, onNavigate }) => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
+          className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
           aria-label="Close gallery"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </motion.button>
 
         {/* Image Counter */}
-        <div className="absolute top-4 left-4 z-10 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium">
+        <div className="absolute left-4 top-4 z-10 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
           {currentIndex + 1} / {images.length}
         </div>
 
@@ -81,10 +82,10 @@ const ImageGallery = ({ images, currentIndex, onClose, onNavigate }) => {
               e.stopPropagation();
               onNavigate(-1);
             }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
+            className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:left-4"
             aria-label="Previous image"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </motion.button>
@@ -100,22 +101,22 @@ const ImageGallery = ({ images, currentIndex, onClose, onNavigate }) => {
               e.stopPropagation();
               onNavigate(1);
             }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
+            className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:right-4"
             aria-label="Next image"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </motion.button>
         )}
 
-        {/* Image Container */}
+        {/* Image — explicit max height so short/wide assets stay visually centered */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.3 }}
-          className="relative max-w-7xl max-h-[90vh] w-full h-full flex items-center justify-center p-4"
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.25 }}
+          className="flex min-h-0 w-full max-w-7xl items-center justify-center"
           onClick={(e) => e.stopPropagation()}
         >
           <motion.img
@@ -126,13 +127,15 @@ const ImageGallery = ({ images, currentIndex, onClose, onNavigate }) => {
             transition={{ duration: 0.2 }}
             src={currentImage}
             alt={`Gallery image ${currentIndex + 1}`}
-            className="max-w-full max-h-full select-none object-contain rounded-lg shadow-2xl"
+            className="max-h-[min(85vh,calc(100dvh-7rem))] w-auto max-w-full select-none object-contain rounded-lg shadow-2xl"
             draggable={false}
           />
         </motion.div>
       </motion.div>
     </AnimatePresence>
   );
+
+  return createPortal(modal, document.body);
 };
 
 export default ImageGallery;
