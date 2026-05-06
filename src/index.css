@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,26 +6,82 @@
 
 @layer base {
   :root {
-    --bg-color: #ffffff;
-    --text-color: #111827;
+    --bg-color: #f8fafc;
+    --text-color: #0f172a;
+    --cursor-ring: rgb(14 165 233 / 0.45);
+    --cursor-dot: rgb(2 132 199);
   }
 
   html.dark {
-    --bg-color: #111827;
-    --text-color: #f9fafb;
+    --bg-color: #020617;
+    --text-color: #f1f5f9;
+    --cursor-ring: rgb(56 189 248 / 0.5);
+    --cursor-dot: rgb(125 211 252);
   }
 
   html {
     scroll-behavior: smooth;
+    /* Hide stray blinking carets on non-editable UI (e.g. images in paragraphs). */
+    caret-color: transparent;
+    min-height: 100dvh;
+    background-color: var(--bg-color);
+  }
+
+  /* Only true text fields show a caret; text selection / copy still works elsewhere */
+  textarea,
+  input:is(
+    [type='text'],
+    [type='search'],
+    [type='email'],
+    [type='password'],
+    [type='url'],
+    [type='tel'],
+    [type='number'],
+    [type='date'],
+    [type='datetime-local'],
+    [type='month'],
+    [type='week'],
+    [type='time']
+  ),
+  input:not([type]),
+  [contenteditable='true'],
+  [contenteditable=''],
+  [contenteditable='plaintext-only'] {
+    caret-color: auto;
   }
 
   body {
+    min-height: 100dvh;
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  #root {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-color);
+  }
+
+  /* Avoid text caret / I-beam when clicking images (e.g. markdown p > img, lightbox) */
+  img,
+  picture,
+  video,
+  canvas {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+
+  canvas {
+    background-color: transparent;
   }
 }
 
@@ -57,5 +113,140 @@
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+/* Custom cursor + spotlight (desktop, fine pointer only; see CursorAura.jsx) */
+@media (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: none !important;
+  }
+
+  html.has-custom-cursor input,
+  html.has-custom-cursor textarea,
+  html.has-custom-cursor [contenteditable='true'] {
+    cursor: text !important;
+  }
+}
+
+/* Cursor-driven background: stacked washes read clearly while moving */
+.cursor-aura-stack {
+  isolation: isolate;
+}
+
+.cursor-aura-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Large primary wash tied directly to the pointer */
+.cursor-aura-layer--wash {
+  background: radial-gradient(
+    125vmin circle at var(--cursor-x, 50vw) var(--cursor-y, 50vh),
+    rgb(14 165 233 / 0.28),
+    rgb(56 189 248 / 0.09) 36%,
+    transparent 64%
+  );
+}
+
+html.dark .cursor-aura-layer--wash {
+  background: radial-gradient(
+    125vmin circle at var(--cursor-x, 50vw) var(--cursor-y, 50vh),
+    rgb(56 189 248 / 0.26),
+    rgb(14 165 233 / 0.08) 38%,
+    transparent 66%
+  );
+}
+
+/* Counter-parallax tint so motion is obvious across the viewport */
+.cursor-aura-layer--parallax {
+  opacity: 0.92;
+  background: radial-gradient(
+    105vmin circle at var(--cursor-parallax-x, 50vw) var(--cursor-parallax-y, 50vh),
+    rgb(99 102 241 / 0.16),
+    rgb(14 165 233 / 0.06) 46%,
+    transparent 70%
+  );
+}
+
+html.dark .cursor-aura-layer--parallax {
+  background: radial-gradient(
+    105vmin circle at var(--cursor-parallax-x, 50vw) var(--cursor-parallax-y, 50vh),
+    rgb(129 140 248 / 0.2),
+    rgb(56 189 248 / 0.07) 48%,
+    transparent 72%
+  );
+}
+
+/* Tight highlight — blend makes it react to whatever section is underneath */
+.cursor-aura-layer--core {
+  mix-blend-mode: soft-light;
+  opacity: 0.88;
+  background: radial-gradient(
+    44vmin circle at var(--cursor-x, 50vw) var(--cursor-y, 50vh),
+    rgb(255 255 255 / 0.5),
+    rgb(14 165 233 / 0.14) 34%,
+    transparent 58%
+  );
+}
+
+html.dark .cursor-aura-layer--core {
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  background: radial-gradient(
+    44vmin circle at var(--cursor-x, 50vw) var(--cursor-y, 50vh),
+    rgb(186 230 253 / 0.4),
+    rgb(56 189 248 / 0.12) 36%,
+    transparent 60%
+  );
+}
+
+.cursor-aura-ring {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 1px solid var(--cursor-ring);
+  opacity: 0.85;
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease,
+    opacity 0.25s ease;
+  transition-property: width, height, border-color, opacity;
+  will-change: transform;
+}
+
+.cursor-aura-ring[data-hover='true'] {
+  width: 52px;
+  height: 52px;
+  opacity: 0.95;
+  border-color: rgb(14 165 233 / 0.65);
+}
+
+html.dark .cursor-aura-ring[data-hover='true'] {
+  border-color: rgb(56 189 248 / 0.7);
+}
+
+.cursor-aura-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--cursor-dot);
+  opacity: 1;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.2s ease,
+    box-shadow 0.25s ease;
+  transition-property: width, height, opacity, box-shadow;
+  will-change: transform;
+}
+
+.cursor-aura-dot[data-hover='true'] {
+  width: 4px;
+  height: 4px;
+  opacity: 0.92;
+  box-shadow: 0 0 0 6px rgb(14 165 233 / 0.2);
+}
+
+html.dark .cursor-aura-dot[data-hover='true'] {
+  box-shadow: 0 0 0 6px rgb(56 189 248 / 0.22);
 }
 

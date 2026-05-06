@@ -3,7 +3,7 @@ import { personalInfo } from '../data/portfolio';
 
 const About = () => {
   return (
-    <section className="py-20 sm:py-32 bg-white dark:bg-gray-900">
+    <section className="py-20 sm:py-32 bg-white/72 dark:bg-slate-950/72 backdrop-blur-[2px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div
@@ -17,7 +17,8 @@ const About = () => {
               <img
                 src={personalInfo.image}
                 alt={personalInfo.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full select-none object-cover"
+                draggable={false}
               />
             </div>
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary-100 dark:bg-primary-900 rounded-2xl -z-10" />

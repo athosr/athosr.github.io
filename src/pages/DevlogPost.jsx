@@ -12,7 +12,7 @@ const DevlogPost = () => {
   if (!entry) {
     return (
       <>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
+        <div className="min-h-screen bg-gray-50/72 dark:bg-gray-900/72 pt-20 backdrop-blur-[2px]">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-8 text-center">
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
@@ -37,7 +37,7 @@ const DevlogPost = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
+      <div className="min-h-screen bg-gray-50/72 dark:bg-gray-900/72 pt-20 backdrop-blur-[2px]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <motion.article
             initial={{ opacity: 0, y: 24 }}

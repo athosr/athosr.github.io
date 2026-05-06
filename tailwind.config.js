@@ -23,7 +23,16 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
+      },
+      backgroundImage: {
+        'grid-pattern':
+          'linear-gradient(to right, rgb(15 23 42 / 0.06) 1px, transparent 1px), linear-gradient(to bottom, rgb(15 23 42 / 0.06) 1px, transparent 1px)',
+        'grid-pattern-dark':
+          'linear-gradient(to right, rgb(248 250 252 / 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgb(248 250 252 / 0.05) 1px, transparent 1px)',
+      },
+      backgroundSize: {
+        grid: '56px 56px',
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-in-out',

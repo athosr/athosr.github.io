@@ -38,7 +38,7 @@ const Navbar = () => {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm'
+          ? 'border-b border-slate-200/70 bg-white/80 shadow-sm backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/75'
           : 'bg-transparent'
       }`}
     >
@@ -47,7 +47,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             to="/"
-            className="text-2xl font-bold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors z-10 relative"
+            className="font-display text-2xl font-bold tracking-tight text-slate-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors z-10 relative"
           >
             {personalInfo.name}
           </Link>

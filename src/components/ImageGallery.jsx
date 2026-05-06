@@ -126,7 +126,7 @@ const ImageGallery = ({ images, currentIndex, onClose, onNavigate }) => {
             transition={{ duration: 0.2 }}
             src={currentImage}
             alt={`Gallery image ${currentIndex + 1}`}
-            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+            className="max-w-full max-h-full select-none object-contain rounded-lg shadow-2xl"
             draggable={false}
           />
         </motion.div>

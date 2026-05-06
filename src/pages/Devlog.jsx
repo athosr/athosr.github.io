@@ -18,7 +18,7 @@ const Devlog = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
+      <div className="min-h-screen bg-gray-50/72 dark:bg-gray-900/72 pt-20 backdrop-blur-[2px]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -44,45 +44,57 @@ const Devlog = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.06 }}
-                  className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 sm:p-8 shadow-sm"
+                  className="group relative rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 sm:p-8 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-primary-500/45 hover:shadow-lg hover:shadow-primary-500/10 dark:hover:border-primary-400/40 dark:hover:shadow-primary-400/10"
                 >
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {formatDateFromYyyyMmDd(entry.date)}
-                    </span>
-                    {entry.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs font-medium px-2.5 py-1 rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300"
-                      >
-                        #{tag}
+                  <Link
+                    to={`/devlog/${entry.slug}`}
+                    className="absolute inset-0 z-[1] rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800"
+                    aria-label={`Read full post: ${entry.title}`}
+                  />
+
+                  <div className="relative z-[2] pointer-events-none">
+                    <div className="flex flex-wrap items-center gap-3 mb-4">
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        {formatDateFromYyyyMmDd(entry.date)}
                       </span>
-                    ))}
+                      {entry.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-xs font-medium px-2.5 py-1 rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3 transition-colors group-hover:text-primary-700 dark:group-hover:text-primary-300">
+                      {entry.title}
+                    </h2>
+
+                    <p className="text-gray-600 dark:text-gray-400 mb-5">{entry.summary}</p>
                   </div>
 
-                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">
-                    {entry.title}
-                  </h2>
+                  {isExpanded && (
+                    <div className="relative z-[3] mb-6 pointer-events-auto">
+                      <MarkdownRenderer content={entry.content} />
+                    </div>
+                  )}
 
-                  <p className="text-gray-600 dark:text-gray-400 mb-5">{entry.summary}</p>
-
-                  {isExpanded && <MarkdownRenderer content={entry.content} className="mb-6" />}
-
-                  <div className="flex flex-wrap items-center gap-4">
+                  <div className="relative z-[2] flex flex-wrap items-center gap-4 pointer-events-none">
                     <button
                       onClick={() => toggleEntry(entry.slug)}
-                      className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="pointer-events-auto inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                       type="button"
                     >
                       {isExpanded ? 'Collapse' : 'Expand'}
                     </button>
 
-                    <Link
-                      to={`/devlog/${entry.slug}`}
-                      className="inline-flex items-center text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
-                    >
+                    <span className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 dark:text-primary-400 transition-all duration-200 group-hover:gap-2">
                       Read full post
-                    </Link>
+                      <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-0.5">
+                        →
+                      </span>
+                    </span>
                   </div>
                 </motion.article>
               );

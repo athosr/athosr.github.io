@@ -53,8 +53,9 @@ const MarkdownRenderer = ({ content, className = '' }) => (
           <img
             src={src}
             alt={alt || 'Devlog media'}
-            className="w-full h-auto rounded-xl border border-gray-200 dark:border-gray-700 mb-4"
+            className="w-full h-auto rounded-xl border border-gray-200 dark:border-gray-700 mb-4 select-none"
             loading="lazy"
+            draggable={false}
           />
         ),
         video: ({ src, children, ...props }) => (

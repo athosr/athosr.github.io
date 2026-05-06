@@ -6,7 +6,7 @@ import { workProjects } from '../utils/work';
 const Work = () => {
   return (
     <>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
+      <div className="min-h-screen bg-slate-50/72 dark:bg-slate-950/72 pt-20 backdrop-blur-[2px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

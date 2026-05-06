@@ -77,7 +77,7 @@ const ProjectDetail = () => {
   const hasVideos = videos.length > 0;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 pt-20">
+    <div className="min-h-screen bg-white/72 dark:bg-gray-900/72 pt-20 backdrop-blur-[2px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back Button */}
         <motion.button
@@ -101,13 +101,14 @@ const ProjectDetail = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="mb-12 rounded-2xl overflow-hidden shadow-2xl cursor-pointer hover:opacity-90 transition-opacity"
+                className="mb-12 select-none rounded-2xl overflow-hidden shadow-2xl cursor-pointer hover:opacity-90 transition-opacity"
                 onClick={() => openGallery(imageIndex)}
               >
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-[400px] sm:h-[500px] object-cover"
+                  className="w-full h-[400px] sm:h-[500px] object-cover select-none"
+                  draggable={false}
                 />
               </motion.div>
             );
@@ -264,7 +265,8 @@ const ProjectDetail = () => {
                         <img
                           src={item.url}
                           alt={`${project.title} screenshot ${idx + 1}`}
-                          className="w-full h-auto object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                          className="w-full h-auto select-none object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                          draggable={false}
                           onClick={() => {
                             const imageIndex = allImages.indexOf(item.url);
                             if (imageIndex !== -1) {
