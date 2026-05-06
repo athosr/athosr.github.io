@@ -29,14 +29,6 @@ const Hero = () => {
             transition={{ duration: 0.8 }}
             className="mb-8"
           >
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.05 }}
-              className="font-display text-xs font-semibold uppercase tracking-[0.28em] text-primary-600 dark:text-primary-400 mb-8"
-            >
-              Portfolio
-            </motion.p>
             <div className="inline-block mb-6">
               <motion.img
                 src={personalInfo.image}

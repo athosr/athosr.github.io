@@ -3,7 +3,7 @@ import { personalInfo } from '../data/portfolio';
 
 const Footer = () => {
   return (
-    <footer className="relative z-20 mt-auto w-full flex-shrink-0 border-t border-slate-200/60 bg-slate-900/85 text-white backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-950/30 py-12 pb-[max(2rem,env(safe-area-inset-bottom,0px))]">
+    <footer className="relative z-20 mt-auto w-full flex-shrink-0 border-t border-slate-200/70 bg-white/88 text-slate-900 shadow-[0_-1px_0_rgba(15,23,42,0.04)] backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-950/40 dark:text-white dark:shadow-none py-12 pb-[max(2rem,env(safe-area-inset-bottom,0px))]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <motion.div
@@ -12,8 +12,8 @@ const Footer = () => {
             viewport={{ once: true }}
             className="mb-6 md:mb-0"
           >
-            <h3 className="text-2xl font-bold mb-2">{personalInfo.name}</h3>
-            <p className="text-slate-400 dark:text-slate-500">{personalInfo.title}</p>
+            <h3 className="text-2xl font-bold mb-2 text-slate-900 dark:text-white">{personalInfo.name}</h3>
+            <p className="text-slate-600 dark:text-slate-400">{personalInfo.title}</p>
           </motion.div>
 
           <motion.div
@@ -27,7 +27,7 @@ const Footer = () => {
               href={personalInfo.social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-400 dark:text-slate-500 hover:text-white dark:hover:text-slate-300 transition-colors"
+              className="text-slate-500 hover:text-primary-600 dark:text-slate-400 dark:hover:text-primary-300 transition-colors"
               aria-label="LinkedIn"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -38,7 +38,7 @@ const Footer = () => {
               href={personalInfo.social.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-400 dark:text-slate-500 hover:text-white dark:hover:text-slate-300 transition-colors"
+              className="text-slate-500 hover:text-primary-600 dark:text-slate-400 dark:hover:text-primary-300 transition-colors"
               aria-label="GitHub"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -49,7 +49,7 @@ const Footer = () => {
               href={personalInfo.social.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-400 dark:text-slate-500 hover:text-white dark:hover:text-slate-300 transition-colors"
+              className="text-slate-500 hover:text-primary-600 dark:text-slate-400 dark:hover:text-primary-300 transition-colors"
               aria-label="WhatsApp"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -64,7 +64,7 @@ const Footer = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="mt-8 pt-8 border-t border-slate-700 dark:border-slate-800 text-center text-slate-400 dark:text-slate-500 text-sm"
+          className="mt-8 pt-8 border-t border-slate-200/90 text-center text-slate-500 dark:border-slate-800 dark:text-slate-500 text-sm"
         >
           <p>&copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</p>
         </motion.div>

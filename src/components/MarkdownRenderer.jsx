@@ -43,9 +43,7 @@ const MarkdownRenderer = ({ content, className = '' }) => (
           return isInline ? (
             <code className={markdownClassMap.code}>{children}</code>
           ) : (
-            <code className={`${className} text-sm text-gray-800 dark:text-gray-200`}>
-              {children}
-            </code>
+            <code className={className}>{children}</code>
           );
         },
         pre: ({ children }) => <MarkdownCodeBlock>{children}</MarkdownCodeBlock>,

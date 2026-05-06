@@ -91,6 +91,31 @@
   }
 }
 
+/* Prism: collapsible markdown code blocks — theme CSS swaps (GHColors / One Dark) via ThemeContext */
+.markdown-code-reveal pre[class*='language-'] {
+  margin: 0;
+  background: transparent !important;
+}
+
+.markdown-code-reveal code[class*='language-'] {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  letter-spacing: 0.015em;
+  -webkit-font-smoothing: antialiased;
+}
+
+html:not(.dark) .markdown-code-reveal .token.comment,
+html:not(.dark) .markdown-code-reveal .token.prolog,
+html:not(.dark) .markdown-code-reveal .token.doctype,
+html:not(.dark) .markdown-code-reveal .token.cdata,
+html.dark .markdown-code-reveal .token.comment,
+html.dark .markdown-code-reveal .token.prolog,
+html.dark .markdown-code-reveal .token.doctype,
+html.dark .markdown-code-reveal .token.cdata {
+  font-style: italic;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

@@ -24,6 +24,9 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const themeToggleClassName =
+    'inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-transparent bg-transparent text-slate-600 outline-none transition-[border-color,box-shadow,color,background-color,backdrop-filter,transform] hover:border-primary-500/35 hover:bg-slate-900/[0.06] hover:text-primary-600 hover:shadow-sm hover:shadow-slate-900/8 hover:backdrop-blur-sm active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500/55 dark:text-slate-200 dark:hover:border-primary-400/30 dark:hover:bg-white/[0.08] dark:hover:text-primary-300 dark:hover:shadow-black/25 dark:hover:backdrop-blur-sm dark:focus-visible:ring-primary-400/50';
+
   const navLinks = [
     { path: '/work', label: 'Work' },
     { path: '/devlog', label: 'Devlog' },
@@ -86,7 +89,7 @@ const Navbar = () => {
             {/* Theme Toggle Button */}
             <button
               onClick={handleThemeToggle}
-              className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className={themeToggleClassName}
               aria-label="Toggle dark mode"
               type="button"
             >
@@ -139,7 +142,7 @@ const Navbar = () => {
           <div className="md:hidden flex items-center space-x-2">
             <button
               onClick={handleThemeToggle}
-              className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className={themeToggleClassName}
               aria-label="Toggle dark mode"
               type="button"
             >

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { syncPrismStylesheet } from '../utils/prismTheme';
 
 const ThemeContext = createContext();
 
@@ -12,34 +13,23 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(() => {
-    // Check localStorage first, then system preference
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('theme');
-      if (stored) {
-        // Apply immediately
-        if (stored === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-        return stored === 'dark';
-      }
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      // Apply immediately
-      if (prefersDark) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-      return prefersDark;
-    }
-    return false;
+    if (typeof window === 'undefined') return false;
+    const stored = localStorage.getItem('theme');
+    let dark = false;
+    if (stored === 'dark') dark = true;
+    else if (stored === 'light') dark = false;
+    else dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    const root = document.documentElement;
+    if (dark) root.classList.add('dark');
+    else root.classList.remove('dark');
+    syncPrismStylesheet(dark);
+    return dark;
   });
 
   useEffect(() => {
-    // Update document class and localStorage when theme changes
     const root = document.documentElement;
-    
+
     if (isDark) {
       root.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -47,6 +37,7 @@ export const ThemeProvider = ({ children }) => {
       root.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
+    syncPrismStylesheet(isDark);
   }, [isDark]);
 
   const toggleTheme = () => {

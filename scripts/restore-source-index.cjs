@@ -26,8 +26,22 @@ const sourceIndexContent = `<!doctype html>
     
     <title>Athos Santos - Software Engineer & Game Developer</title>
     
-    <!-- Prism.js for syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+    <link id="prism-theme-active" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-ghcolors.css" />
+    <script>
+      (function () {
+        var dark = false;
+        try {
+          var s = localStorage.getItem('theme');
+          if (s === 'dark') dark = true;
+          else if (s === 'light') dark = false;
+          else dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        } catch (e) {}
+        var el = document.getElementById('prism-theme-active');
+        if (el && dark) {
+          el.setAttribute('href', 'https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-dark.css');
+        }
+      })();
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
